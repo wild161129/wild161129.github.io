@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="calculator">
+    
+    <div class="display-container">
+        <div id="history-preview" class="history-preview"></div>
+        <input type="text" id="display" placeholder="0" disabled>
+    </div>
+    
+    <div class="grid-container">
+        <button onclick="clearDisplay()" class="text-yellow">AC</button>
+        <button onclick="deleteLast()" class="text-yellow">DEL</button>
+        <button onclick="appendValue('%')" class="text-yellow">%</button>
+        <button onclick="appendValue('/')" class="text-yellow">÷</button>
+        
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('*')" class="text-yellow">×</button>
+        
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('+')" class="text-yellow">+</button>
+        
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('-')" class="text-yellow">-</button>
+        
+        <button onclick="toggleSign()">±</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()" class="equal-btn">=</button>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById('display');
+    const historyPreview = document.getElementById('history-preview');
+
+    function appendValue(input) { display.value += input; }
+    
+    function clearDisplay() { 
+        display.value = ""; 
+        historyPreview.innerText = ""; // Hapus histori saat AC
+    }
+
+    function deleteLast() { display.value = display.value.slice(0, -1); }
+
+    function calculate() {
+        try {
+            let expression = display.value;
+            if (!expression) return;
+
+            let formattedExpr = expression.replace(/×/g, '*').replace(/÷/g, '/').replace(/%/g, '/100');
+            let result = eval(formattedExpr);
+
+            // Tampilkan operasi (histori preview)
+            historyPreview.innerText = expression + " =";
+            
+            // Update hasil utama
+            display.value = result;
+        } catch (error) {
+            display.value = "Error";
+        }
+    }
+
+    function toggleSign() {
+        if (display.value) display.value = String(parseFloat(display.value) * -1);
+    }
+</script>
+
+</body>
+</html>
